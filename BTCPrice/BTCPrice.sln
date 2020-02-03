@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTCPrice", "BTCPrice.csproj", "{0321C265-6E46-4EFE-887A-781596CE1AF2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0321C265-6E46-4EFE-887A-781596CE1AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0321C265-6E46-4EFE-887A-781596CE1AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0321C265-6E46-4EFE-887A-781596CE1AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0321C265-6E46-4EFE-887A-781596CE1AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93321107-90A1-4B1B-8AE3-25CD9D014AC8}
+	EndGlobalSection
+EndGlobal

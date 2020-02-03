@@ -6,61 +6,48 @@ using System.Threading.Tasks;
 
 namespace BTCPrice
 {
-    public class Product
+    public class USD
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public string Category { get; set; }
+        public string code { get; set; }
+        public string symbol { get; set; }
+        public string rate { get; set; }
+        public string description { get; set; }
+        public double rate_float { get; set; }
     }
-
+    public class GBP
+    {
+        public string code { get; set; }
+        public string symbol { get; set; }
+        public string rate { get; set; }
+        public string description { get; set; }
+        public double rate_float { get; set; }
+    }
+    public class Bpi
+    {
+        public USD USD { get; set; }
+        public GBP GBP { get; set; }        
+    } 
     class Program
     {
         static HttpClient client = new HttpClient();
 
-        static void ShowProduct(Product product)
+        static void ShowProduct(Bpi bpi)
         {
-            Console.WriteLine($"Name: {product.Name}\tPrice: " +
-                $"{product.Price}\tCategory: {product.Category}");
-        }
+            Console.WriteLine($"Symbol: {bpi.GBP.symbol}\tRate: " +
+                $"{bpi.GBP.rate}\tDescription: {bpi.GBP.description}");
+        }        
 
-        static async Task<Uri> CreateProductAsync(Product product)
+        static async Task<Bpi> GetProductAsync(string path)
         {
-            HttpResponseMessage response = await client.PostAsJsonAsync(
-                "api/products", product);
-            response.EnsureSuccessStatusCode();
-
-            // return URI of the created resource.
-            return response.Headers.Location;
-        }
-
-        static async Task<Product> GetProductAsync(string path)
-        {
-            Product product = null;
+            Bpi bpi = null;
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.IsSuccessStatusCode)
             {
-                product = await response.Content.ReadAsAsync<Product>();
+                //Console.WriteLine("{0}", response.Content.ReadAsStringAsync().Result);
+                bpi = await response.Content.ReadAsAsync<Bpi>();
+
             }
-            return product;
-        }
-
-        static async Task<Product> UpdateProductAsync(Product product)
-        {
-            HttpResponseMessage response = await client.PutAsJsonAsync(
-                $"api/products/{product.Id}", product);
-            response.EnsureSuccessStatusCode();
-
-            // Deserialize the updated product from the response body.
-            product = await response.Content.ReadAsAsync<Product>();
-            return product;
-        }
-
-        static async Task<HttpStatusCode> DeleteProductAsync(string id)
-        {
-            HttpResponseMessage response = await client.DeleteAsync(
-                $"api/products/{id}");
-            return response.StatusCode;
+            return bpi;
         }
 
         static void Main()
@@ -71,41 +58,19 @@ namespace BTCPrice
         static async Task RunAsync()
         {
             // Update port # in the following line.
-            client.BaseAddress = new Uri("https://api.coindesk.com/v1/bpi/currentprice.json");
+            //client.BaseAddress = new Uri("https://api.coindesk.com/v1/bpi/currentprice.json");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-
             try
             {
-                // Create a new product
-                Product product = new Product
-                {
-                    Name = "Gizmo",
-                    Price = 100,
-                    Category = "Widgets"
-                };
-
-                var url = "https://api.coindesk.com/v1/bpi/currentprice.json";
+                Bpi bpi = null;
+                var url = "http://api.coindesk.com/v1/bpi/currentprice.json";
                 Console.WriteLine($"Created at {url}");
 
                 // Get the product
-                product = await GetProductAsync(url);
-                ShowProduct(product);
-
-                // Update the product
-                Console.WriteLine("Updating price...");
-                product.Price = 80;
-                await UpdateProductAsync(product);
-
-                // Get the updated product
-                product = await GetProductAsync(url);
-                ShowProduct(product);
-
-                // Delete the product
-                var statusCode = await DeleteProductAsync(product.Id);
-                Console.WriteLine($"Deleted (HTTP Status = {(int)statusCode})");
-
+                bpi = await GetProductAsync(url);
+                ShowProduct(bpi);
             }
             catch (Exception e)
             {
